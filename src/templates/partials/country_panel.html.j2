@@ -1,0 +1,53 @@
+<div id="country-panel-overlay" class="no-print"></div>
+<aside id="country-panel" class="no-print" aria-hidden="true" aria-label="Country profile">
+  {% for iso, p in country_panels.items() %}
+  <div class="panel-pane" data-panel="{{ iso }}" hidden>
+    <div class="panel-head">
+      <button class="panel-close" data-close-panel aria-label="Close country profile"><svg><use href="#icon-x"/></svg></button>
+      <span class="iso-badge" style="background:rgba(255,255,255,.16)">{{ iso }}</span>
+      <h2 style="color:#fff;margin:10px 0 2px">{{ p.name }}</h2>
+      <div style="font-size:12.5px;opacity:.85">{{ p.stream }} stream &middot; {{ p.survey_type }} &middot; {{ p.current_phase_register }}</div>
+      <div class="panel-kpis">
+        <div class="panel-kpi"><div class="v">{{ p.rate_pct }}%</div><div class="l">Completion rate</div></div>
+        <div class="panel-kpi"><div class="v">{{ p.wpi_pct }}%</div><div class="l">Weighted index</div></div>
+        <div class="panel-kpi"><div class="v">{{ p.completed_count }}/{{ p.applicable_count }}</div><div class="l">Milestones done</div></div>
+        <div class="panel-kpi"><div class="v">{{ p.delayed_count }}</div><div class="l">Delayed</div></div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="panel-section">
+        <h3>Focal point</h3>
+        <p style="font-size:12.5px;color:var(--muted)">{{ p.focal_point or 'not on file' }}{% if p.institution %}, {{ p.institution }}{% endif %}</p>
+      </div>
+      <div class="panel-section">
+        <h3>Milestone timeline ({{ p.timeline|length }})</h3>
+        {% for t in p.timeline %}
+        <div class="timeline-row">
+          <span class="status-pill st-{{ t.status }}">{{ t.status }}</span>
+          <span style="flex:1">
+            <strong style="font-size:12px">{{ t.id }}</strong> — {{ t.name }}
+            {% if t.comment %}<br><span style="color:var(--muted);font-size:11px">{{ t.comment }}</span>{% endif %}
+          </span>
+          <span class="timeline-dates">Planned {{ t.planned or '—' }}<br>Actual {{ t.actual or '—' }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="panel-section">
+        <h3>Results indicators</h3>
+        <p style="font-size:12px;color:var(--muted)">See section 4, Access to medicines results, for this country's row in every indicator table.</p>
+      </div>
+      {% if p.risks %}
+      <div class="panel-section">
+        <h3>Risks ({{ p.risks|length }})</h3>
+        {% for r in p.risks %}
+        <div class="timeline-row">
+          <span class="rating-badge {{ r.Rating }}">{{ r.Rating }}</span>
+          <span style="flex:1"><strong style="font-size:12px">{{ r['Risk ID'] }}</strong> — {{ r['Risk description'] }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</aside>

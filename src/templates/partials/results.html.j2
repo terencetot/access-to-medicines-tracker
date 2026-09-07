@@ -1,0 +1,71 @@
+<section class="section" id="section-results" aria-labelledby="results-h2">
+  <div class="section-head">
+    <div class="section-eyebrow"><span class="n">4</span>Access to medicines results</div>
+    <h2 id="results-h2">The point of the whole exercise</h2>
+    <p class="section-sub">Grouped by domain. Where no value has been recorded, the card names the milestone that will produce it and its expected date, rather than an empty chart. At this stage of implementation, most of this section is in that state — that is itself the message.</p>
+  </div>
+
+  {% for domain, indicators in domains.items() %}
+  {% if indicators %}
+  <div class="domain-block">
+    <div class="domain-title">
+      <h3>{{ domain }}</h3>
+      <span class="domain-count">{{ indicators|length }} indicator{{ 's' if indicators|length != 1 }}</span>
+    </div>
+    <div class="indicator-grid">
+      {% for ind in indicators %}
+      <div class="indicator-card">
+        <div class="indicator-code">{{ ind.code }} · {{ ind.unit }}</div>
+        <h4>{{ ind.indicator }}</h4>
+        <div class="indicator-meta">{{ ind.framework }} &middot; {{ ind.populated_count }} of {{ ind.countries|length }} countries populated this round</div>
+        {% if ind.populated_count < ind.countries|length %}
+        <div class="indicator-empty">
+          Not yet recorded — produced by <strong>{{ ind.source_milestone }}</strong> ({{ ind.source_milestone_name }}). Expected date shown per country below.
+        </div>
+        {% endif %}
+
+        <div class="table-wrap" style="margin-top:10px">
+          <table class="data-table" style="font-size:11.5px;table-layout:fixed;width:100%">
+            <colgroup>
+              <col style="width:64px"><col style="width:52px"><col style="width:52px"><col><col style="width:52px">
+            </colgroup>
+            <thead>
+              <tr><th>Country</th><th>Baseline</th><th>Target</th><th>This round</th><th>Gap</th></tr>
+            </thead>
+            <tbody>
+              {% for cr in ind.countries %}
+              <tr>
+                <td><span class="iso-badge" style="width:28px;height:20px;font-size:9.5px">{{ cr.iso3 }}</span></td>
+                <td class="num">{{ cr.baseline if cr.baseline is not none else '—' }}{% if cr.baseline_year %} <span style="color:var(--muted)">({{ cr.baseline_year }})</span>{% endif %}</td>
+                <td class="num">{{ cr.target if cr.target is not none else '—' }}{% if cr.target_year %} <span style="color:var(--muted)">({{ cr.target_year }})</span>{% endif %}</td>
+                {% if cr.value is not none %}
+                <td class="num">{{ cr.value }}</td>
+                <td class="num">{{ cr.gap if cr.gap is not none else '—' }}</td>
+                {% else %}
+                <td colspan="2" style="color:#8A5A00;white-space:normal;font-size:11px">Pending — expected {{ cr.pending.expected }}</td>
+                {% endif %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <details class="indicator-def">
+          <summary>Full indicator definition (sheet 06, verbatim)</summary>
+          <dl class="def-body">
+            <dt>Definition</dt><dd>{{ ind.definition }}</dd>
+            <dt>Numerator</dt><dd>{{ ind.numerator }}</dd>
+            <dt>Denominator</dt><dd>{{ ind.denominator }}</dd>
+            <dt>Method and notes</dt><dd>{{ ind.method }}</dd>
+            <dt>Periodicity</dt><dd>{{ ind.periodicity }}</dd>
+            <dt>Disaggregation</dt><dd>{{ ind.disaggregation }}</dd>
+            <dt>Reference</dt><dd>{{ ind.reference }} &middot; source milestone {{ ind.source_milestone }}</dd>
+          </dl>
+        </details>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+</section>

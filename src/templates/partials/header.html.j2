@@ -1,0 +1,21 @@
+<header class="header-band" id="section-summary">
+  <div class="eyebrow">WHO Regional Office for Africa · Disease Prevention and Control · NCD and Mental Health</div>
+  <h1>Access to Medicines Tracking Platform</h1>
+  <div class="subtitle">Neurological disorders and dementia, WHO African Region — IGAP 2022&ndash;2031 and the global action plan on dementia</div>
+  <div class="header-meta">
+    <span>Reporting period: <strong>{{ header.reporting_period }}</strong></span>
+    <span>Build date: <strong>{{ header.build_date }}</strong></span>
+    <span>Workbook: <strong>{{ header.workbook_version }}</strong></span>
+    {% if header.chip_amber %}
+    <span class="status-chip is-amber">
+      <svg><use href="#icon-alert-triangle"/></svg>
+      Provisional data, evidence pending — {{ header.evidence_pct }}% of completed milestones verified
+    </span>
+    {% else %}
+    <span class="status-chip is-green">
+      <svg><use href="#icon-shield-check"/></svg>
+      {{ header.evidence_pct }}% of completed milestones verified
+    </span>
+    {% endif %}
+  </div>
+</header>

@@ -1,0 +1,51 @@
+<section class="section" id="section-progress" aria-labelledby="progress-h2">
+  <div class="section-head">
+    <div class="section-eyebrow"><span class="n">2</span>Country progress</div>
+    <h2 id="progress-h2">Phase position and the two progress measures</h2>
+    <p class="section-sub">Completion rate (strict, audit-friendly) and the weighted progress index (credits in-progress and delayed work partially) are always shown together, never one alone. Click a country to open its profile.</p>
+  </div>
+  <div class="legend" style="margin-bottom:14px">
+    <span class="item"><span class="status-pill st-C">C</span> Completed</span>
+    <span class="item"><span class="status-pill st-IP">IP</span> In progress</span>
+    <span class="item"><span class="status-pill st-D">D</span> Delayed</span>
+    <span class="item"><span class="status-pill st-NS">NS</span> Not started</span>
+    <span class="item"><span class="status-pill st-NA">NA</span> Not applicable</span>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table" id="country-table">
+      <thead>
+        <tr>
+          <th><button class="sort-btn" data-sort="name" data-type="text">Country <svg><use href="#icon-arrow-up"/></svg></button></th>
+          <th>Phase pipeline</th>
+          <th><button class="sort-btn" data-sort="rate" data-type="num">Completion rate <svg><use href="#icon-arrow-up"/></svg></button></th>
+          <th><button class="sort-btn" data-sort="wpi" data-type="num">Weighted index <svg><use href="#icon-arrow-up"/></svg></button></th>
+          <th><button class="sort-btn" data-sort="delayed" data-type="num">Delayed <svg><use href="#icon-arrow-up"/></svg></button></th>
+          <th>Stream</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in countries %}
+        <tr data-name="{{ c.name }}" data-rate="{{ c.rate }}" data-wpi="{{ c.wpi }}" data-delayed="{{ c.delayed_count }}">
+          <td>
+            <span class="iso-badge">{{ c.iso3 }}</span>
+            <button class="country-link" data-open-country="{{ c.iso3 }}">{{ c.name }}</button>
+          </td>
+          <td>{{ c.phase_svg | safe }}</td>
+          <td class="num">{{ c.dual_bar_svg | safe }}<br>
+            <span style="color:var(--primary);font-weight:700">{{ c.rate_pct }}%</span>
+          </td>
+          <td class="num"><span style="color:var(--accent);font-weight:700">{{ c.wpi_pct }}%</span></td>
+          <td class="num">
+            {% if c.delayed_count > 0 %}
+            <span class="pill-count nonzero">{{ c.delayed_count }}</span>
+            {% else %}
+            <span class="pill-count zero">0</span>
+            {% endif %}
+          </td>
+          <td>{{ c.stream }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>

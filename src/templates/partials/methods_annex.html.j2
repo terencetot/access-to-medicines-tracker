@@ -1,0 +1,52 @@
+<section class="section" id="section-methods" aria-labelledby="methods-h2">
+  <div class="section-head">
+    <div class="section-eyebrow"><span class="n">7</span>Methods annex</div>
+    <h2 id="methods-h2">Indicator definitions and the data quality log</h2>
+    <p class="section-sub">Rendered verbatim from sheet 06 (indicator metadata) and sheet 10 (data quality log). Every indicator card in section 4 links here.</p>
+  </div>
+
+  {% for domain, items in methods_by_domain.items() %}
+  {% if items %}
+  <h3 style="font-size:14px;margin:18px 0 10px">{{ domain }}</h3>
+  {% for m in items %}
+  <div class="methods-card" id="method-{{ m['Indicator code'] }}">
+    <h4>{{ m['Indicator code'] }} — {{ m.Indicator }}</h4>
+    <dl class="methods-grid-def">
+      <dt>Definition</dt><dd>{{ m.Definition }}</dd>
+      <dt>Numerator</dt><dd>{{ m.Numerator }}</dd>
+      <dt>Denominator</dt><dd>{{ m.Denominator }}</dd>
+      <dt>Method and notes</dt><dd>{{ m['Method of measurement and notes'] }}</dd>
+      <dt>Data source</dt><dd>{{ m['Data source'] }}</dd>
+      <dt>Periodicity</dt><dd>{{ m.Periodicity }}</dd>
+      <dt>Disaggregation</dt><dd>{{ m.Disaggregation }}</dd>
+      <dt>Global framework alignment</dt><dd>{{ m['Global framework alignment'] }}</dd>
+      <dt>Reference</dt><dd>{{ m.Reference }}</dd>
+      <dt>Source milestone</dt><dd>{{ m['Source milestone'] }}</dd>
+    </dl>
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endfor %}
+
+  <h3 style="font-size:14px;margin:26px 0 10px">Data quality log (sheet 10, verbatim)</h3>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr><th>ID</th><th>Source</th><th>Cell / field</th><th>Issue type</th><th>Description</th><th>Action</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        {% for dq in data_quality_log %}
+        <tr>
+          <td class="num">{{ dq['Issue ID'] }}</td>
+          <td style="font-size:11.5px">{{ dq.Source }}</td>
+          <td class="num">{{ dq['Cell or field'] }}</td>
+          <td>{{ dq['Issue type'] }}</td>
+          <td style="max-width:260px;white-space:normal;font-size:11.5px">{{ dq.Description }}</td>
+          <td style="max-width:220px;white-space:normal;font-size:11.5px">{{ dq['Action taken or required'] }}</td>
+          <td>{{ dq.Status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>

@@ -1,0 +1,118 @@
+(function () {
+  "use strict";
+
+  /* ---- Mobile nav toggle ------------------------------------------- */
+  var navToggle = document.getElementById("nav-toggle");
+  var sideNav = document.getElementById("side-nav");
+  var navOverlay = document.getElementById("side-nav-overlay");
+  function closeNav() {
+    sideNav.classList.remove("is-open");
+    navToggle.setAttribute("aria-expanded", "false");
+  }
+  if (navToggle) {
+    navToggle.addEventListener("click", function () {
+      var open = sideNav.classList.toggle("is-open");
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  }
+  document.querySelectorAll(".side-nav .nav-link").forEach(function (a) {
+    a.addEventListener("click", closeNav);
+  });
+
+  /* ---- Active section highlighting on scroll ------------------------ */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".side-nav .nav-link"));
+  var sections = navLinks
+    .map(function (a) { return document.querySelector(a.getAttribute("href")); })
+    .filter(Boolean);
+  if ("IntersectionObserver" in window && sections.length) {
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          navLinks.forEach(function (a) { a.classList.remove("is-active"); });
+          var idx = sections.indexOf(entry.target);
+          if (idx >= 0) navLinks[idx].classList.add("is-active");
+        });
+      },
+      { rootMargin: "-20% 0px -70% 0px" }
+    );
+    sections.forEach(function (s) { observer.observe(s); });
+  }
+
+  /* ---- Tooltip for heatmap cells (mouse + keyboard) ------------------ */
+  var tooltip = document.getElementById("tooltip");
+  function showTip(el) {
+    var text = el.getAttribute("data-tip");
+    if (!text) return;
+    tooltip.textContent = text;
+    var rect = el.getBoundingClientRect();
+    var top = rect.top - tooltip.offsetHeight - 10;
+    var left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2;
+    if (top < 8) top = rect.bottom + 10;
+    left = Math.max(8, Math.min(left, window.innerWidth - tooltip.offsetWidth - 8));
+    tooltip.style.top = top + "px";
+    tooltip.style.left = left + "px";
+    tooltip.classList.add("is-visible");
+  }
+  function hideTip() {
+    tooltip.classList.remove("is-visible");
+  }
+  document.querySelectorAll("[data-tip]").forEach(function (el) {
+    el.addEventListener("mouseenter", function () { showTip(el); });
+    el.addEventListener("mouseleave", hideTip);
+    el.addEventListener("focus", function () { showTip(el); });
+    el.addEventListener("blur", hideTip);
+  });
+
+  /* ---- Sortable country table ---------------------------------------- */
+  var table = document.getElementById("country-table");
+  if (table) {
+    var tbody = table.querySelector("tbody");
+    table.querySelectorAll(".sort-btn").forEach(function (btn) {
+      var asc = true;
+      btn.addEventListener("click", function () {
+        var key = btn.getAttribute("data-sort");
+        var type = btn.getAttribute("data-type");
+        var rows = Array.prototype.slice.call(tbody.querySelectorAll("tr"));
+        rows.sort(function (a, b) {
+          var av = a.getAttribute("data-" + key);
+          var bv = b.getAttribute("data-" + key);
+          if (type === "num") { av = parseFloat(av); bv = parseFloat(bv); }
+          if (av < bv) return asc ? -1 : 1;
+          if (av > bv) return asc ? 1 : -1;
+          return 0;
+        });
+        rows.forEach(function (r) { tbody.appendChild(r); });
+        asc = !asc;
+      });
+    });
+  }
+
+  /* ---- Country profile drawer ---------------------------------------- */
+  var overlay = document.getElementById("country-panel-overlay");
+  var panel = document.getElementById("country-panel");
+  var panes = document.querySelectorAll(".panel-pane");
+  function openCountry(iso) {
+    panes.forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== iso; });
+    panel.classList.add("is-open");
+    overlay.classList.add("is-open");
+    panel.setAttribute("aria-hidden", "false");
+    var closeBtn = panel.querySelector('.panel-pane[data-panel="' + iso + '"] .panel-close');
+    if (closeBtn) closeBtn.focus();
+  }
+  function closeCountry() {
+    panel.classList.remove("is-open");
+    overlay.classList.remove("is-open");
+    panel.setAttribute("aria-hidden", "true");
+  }
+  document.querySelectorAll("[data-open-country]").forEach(function (btn) {
+    btn.addEventListener("click", function () { openCountry(btn.getAttribute("data-open-country")); });
+  });
+  document.querySelectorAll("[data-close-panel]").forEach(function (btn) {
+    btn.addEventListener("click", closeCountry);
+  });
+  overlay.addEventListener("click", closeCountry);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { closeCountry(); hideTip(); closeNav(); }
+  });
+})();

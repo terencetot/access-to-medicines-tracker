@@ -1,0 +1,25 @@
+<nav class="side-nav" id="side-nav" aria-label="Dashboard sections">
+  <div class="brand">
+    <div class="brand-badge">
+      <div class="brand-mark"><svg><use href="#icon-pill"/></svg></div>
+      <div class="brand-text">
+        <strong>WHO AFRO</strong>
+        <span>Access to Medicines</span>
+      </div>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="#section-summary"><svg><use href="#icon-home"/></svg>Overview</a>
+    <a class="nav-link" href="#section-progress"><svg><use href="#icon-users"/></svg>Country progress</a>
+    <a class="nav-link" href="#section-heatmap"><svg><use href="#icon-grid"/></svg>Milestone heatmap</a>
+    <a class="nav-link" href="#section-results"><svg><use href="#icon-target"/></svg>Results indicators</a>
+    <a class="nav-link" href="#section-tracer"><svg><use href="#icon-flask"/></svg>Tracer basket</a>
+    <a class="nav-link" href="#section-risks"><svg><use href="#icon-alert-triangle"/></svg>Risk register</a>
+    <a class="nav-link" href="#section-methods"><svg><use href="#icon-book"/></svg>Methods annex</a>
+  </nav>
+  <div class="nav-foot">
+    Workbook {{ header.workbook_version.split('(')[0].strip() if '(' in header.workbook_version else header.workbook_version }}<br>
+    Built {{ header.build_date }}
+  </div>
+</nav>
+<div id="side-nav-overlay" class="no-print"></div>

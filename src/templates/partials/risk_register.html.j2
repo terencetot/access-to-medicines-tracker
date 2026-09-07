@@ -1,0 +1,41 @@
+<section class="section" id="section-risks" aria-labelledby="risks-h2">
+  <div class="section-head">
+    <div class="section-eyebrow"><span class="n">6</span>Risk register</div>
+    <h2 id="risks-h2">Likelihood by impact, and the open risks</h2>
+    <p class="section-sub">{{ open_risks_sorted|length }} of {{ risks_sorted|length }} risks on the register are open or in progress, sorted below by inherent score.</p>
+  </div>
+  <div class="risk-layout">
+    <div class="card">
+      {{ risk_matrix_svg | safe }}
+      <div class="legend" style="margin-top:12px">
+        <span class="item"><span class="rating-badge Low">&nbsp;</span> Low</span>
+        <span class="item"><span class="rating-badge Moderate">&nbsp;</span> Moderate</span>
+        <span class="item"><span class="rating-badge High">&nbsp;</span> High</span>
+        <span class="item"><span class="rating-badge Extreme">&nbsp;</span> Extreme</span>
+      </div>
+      {% if risk_scoring_note %}
+      <p style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.7">{{ risk_scoring_note }}</p>
+      {% endif %}
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>ID</th><th>Country</th><th>Category</th><th>Description</th><th>Rating</th><th>Owner</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          {% for r in open_risks_sorted %}
+          <tr>
+            <td class="num">{{ r['Risk ID'] }}</td>
+            <td>{{ r.Country }}</td>
+            <td>{{ r.Category }}</td>
+            <td style="max-width:280px;white-space:normal">{{ r['Risk description'] }}</td>
+            <td><span class="rating-badge {{ r.Rating }}">{{ r.Rating }}</span> <span class="num" style="color:var(--muted)">{{ r['Inherent score'] }}</span></td>
+            <td style="font-size:11.5px">{{ r.Owner }}</td>
+            <td>{{ r.Status }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

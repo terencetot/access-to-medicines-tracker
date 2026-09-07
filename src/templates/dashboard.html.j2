@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Access to Medicines Tracking Platform — WHO AFRO</title>
+<meta name="description" content="Access to Medicines Tracking Platform for neurological disorders and dementia, WHO African Region. IGAP 2022-2031 and the global action plan on dementia.">
+<link rel="icon" href="data:,">
+<style>
+{{ css | safe }}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+{{ icons | safe }}
+
+<div id="tooltip" role="tooltip"></div>
+
+<div class="app-shell">
+  <button id="nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="side-nav">
+    <svg><use href="#icon-menu"/></svg>
+  </button>
+
+  {% include "partials/side_nav.html.j2" %}
+
+  <main class="main" id="main-content">
+    <div class="main-inner">
+      {% include "partials/header.html.j2" %}
+      {% include "partials/regional_summary.html.j2" %}
+      {% include "partials/country_progress.html.j2" %}
+      {% include "partials/heatmap.html.j2" %}
+      {% include "partials/results.html.j2" %}
+      {% include "partials/tracer_basket.html.j2" %}
+      {% include "partials/risk_register.html.j2" %}
+      {% include "partials/methods_annex.html.j2" %}
+      {% include "partials/footer.html.j2" %}
+    </div>
+  </main>
+</div>
+
+{% include "partials/country_panel.html.j2" %}
+
+<script>
+{% include "partials/script.js.j2" %}
+</script>
+</body>
+</html>

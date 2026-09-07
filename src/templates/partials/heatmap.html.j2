@@ -1,0 +1,46 @@
+<section class="section" id="section-heatmap" aria-labelledby="heatmap-h2">
+  <div class="section-head">
+    <div class="section-eyebrow"><span class="n">3</span>Milestone heatmap</div>
+    <h2 id="heatmap-h2">All 31 milestones, six countries</h2>
+    <p class="section-sub">Rows grouped by phase. Hover or focus a cell for the milestone, means of verification, planned and actual date, and verification status. The regional column on the right is the share of countries at C for that milestone.</p>
+  </div>
+  <div class="heatmap-scroll">
+    <table class="heatmap">
+      <thead>
+        <tr>
+          <th>Milestone</th>
+          {% for c in countries %}
+          <th>{{ c.iso3 }}</th>
+          {% endfor %}
+          <th>Regional</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for phase in phases %}
+        <tr class="phase-row">
+          <th colspan="{{ countries|length + 2 }}">{{ phase.name }}</th>
+        </tr>
+        {% for m in phase.milestones %}
+        <tr>
+          <th scope="row">{{ m.id }} — {{ m.name }}</th>
+          {% for cell in m.cells %}
+          <td>
+            <span class="hm-cell st-{{ cell.status }}"
+                  style="background:{{ {'C':'#2E7D32','IP':'#F9A825','D':'#C62828','NS':'#9E9E9E','NA':'#D9D9D3'}[cell.status] }}{% if cell.status == 'IP' %};color:#5A3B00{% endif %}"
+                  tabindex="0" data-tip="{{ cell.tip }}">{{ cell.status }}</span>
+          </td>
+          {% endfor %}
+          <td class="rollup-cell">
+            <svg viewBox="0 0 64 8" width="64" height="8" aria-hidden="true">
+              <rect x="0" y="0" width="64" height="8" rx="4" fill="#EEEEE8"/>
+              <rect x="0" y="0" width="{{ (64 * m.rollup) | round(1) }}" height="8" rx="4" fill="#00205B"/>
+            </svg>
+            <span style="font-size:10.5px;color:var(--muted);margin-left:4px">{{ m.rollup_pct }}%</span>
+          </td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
