@@ -3,8 +3,8 @@
    colours are fixed by the design brief and must not drift between sections. */
 *,*::before,*::after{box-sizing:border-box}
 :root{
-  --primary:#00205B;        /* WHO navy */
-  --accent:#0093D5;         /* WHO light blue */
+  --primary:#0C4A36;        /* deep forest green */
+  --accent:#176C4F;         /* lighter working green */
   --bg:#FAFAF8;             /* warm neutral background */
   --surface:#FFFFFF;
   --ink:#14213D;
@@ -18,8 +18,8 @@
   --status-notstarted:#9E9E9E;
   --status-na:#B9BCC4;
 
-  --font-serif:Georgia,'Iowan Old Style','Palatino Linotype','Book Antiqua',serif;
-  --font-sans:Calibri,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-serif:Constantia,Georgia,'Iowan Old Style','Palatino Linotype','Book Antiqua',serif;
+  --font-sans:'Segoe UI',Calibri,Roboto,Helvetica,Arial,sans-serif;
 
   --fs-xs:11px; --fs-sm:12.5px; --fs-base:14px; --fs-md:16px;
   --fs-lg:20px; --fs-xl:26px; --fs-2xl:34px; --fs-3xl:42px;
@@ -31,7 +31,6 @@
   --nav-w:248px;
   --topbar-h:64px;
 }
-@keyframes shimmer{0%{background-position:-500px 0}100%{background-position:500px 0}}
 html{scroll-behavior:smooth}
 html,body{overflow-x:hidden;max-width:100%}
 @media(prefers-reduced-motion:reduce){
@@ -55,13 +54,8 @@ a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,
 /* ── Top bar: institutional branding, sticky above everything ── */
 .top-bar{
   position:sticky;top:0;z-index:1100;height:var(--topbar-h);
-  background:linear-gradient(135deg,#000d28 0%,#001a4a 45%,#00205B 100%);
-  box-shadow:0 4px 22px rgba(0,10,50,.35);overflow:hidden;
-}
-.top-bar::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,#00205B,#0093D5,#6fd6ff,#0093D5,#00205B);
-  background-size:400% auto;animation:shimmer 12s linear infinite;
+  background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 100%);
+  box-shadow:0 4px 22px rgba(6,32,20,.28);overflow:hidden;
 }
 .top-bar-inner{max-width:1480px;margin:0 auto;height:100%;display:flex;align-items:center;gap:20px;padding:0 28px}
 .top-bar-logos{display:flex;align-items:center;gap:16px;flex-shrink:0}
@@ -89,8 +83,6 @@ a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,
 .side-nav .nav-link:hover{background:rgba(255,255,255,.08);color:#fff}
 .side-nav .nav-link.is-active{background:rgba(255,255,255,.14);color:#fff;font-weight:700}
 .side-nav .nav-link.is-active svg{opacity:1}
-.side-nav .nav-foot{margin-top:auto;padding:14px 20px 0;border-top:1px solid rgba(255,255,255,.14);
-  font-size:10.5px;color:rgba(255,255,255,.6);line-height:1.7}
 .main{flex:1;min-width:0;padding:0 0 60px}
 .main-inner{max-width:1180px;margin:0 auto;padding:0 32px}
 
@@ -103,32 +95,15 @@ a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,
 .hero .subtitle{font-size:var(--fs-md);color:var(--muted);margin-bottom:16px;max-width:640px}
 .hero-right{
   width:300px;flex-shrink:0;position:relative;overflow:hidden;
-  background:linear-gradient(155deg,#000a1e 0%,#001540 35%,#002f70 70%,#0050a0 100%);
+  background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 100%);
   display:flex;align-items:center;padding:30px 32px;
   clip-path:polygon(10% 0,100% 0,100% 100%,0 100%);
 }
-.hero-right-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
 .hero-stats{display:flex;flex-direction:column;gap:18px;position:relative;z-index:1;width:100%}
 .hero-stat{border-left:3px solid var(--accent);padding-left:14px}
 .hero-stat-val{font-family:var(--font-serif);font-size:2.1rem;font-weight:600;color:#fff;line-height:1;letter-spacing:-.01em}
 .hero-stat-lbl{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.72);margin-top:5px}
-.header-meta{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:var(--fs-sm);color:var(--muted);margin-bottom:16px}
-.header-meta strong{color:var(--ink)}
-.status-chip{
-  display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:9999px;
-  font-size:12.5px;font-weight:700;border:1.5px solid transparent;
-}
-.status-chip.is-amber{background:#FFF6E0;color:#8A5A00;border-color:#F3D385}
-.status-chip.is-green{background:#E9F5EA;color:#1E5A22;border-color:#A9D6AC}
-.status-chip svg{width:14px;height:14px;stroke:currentColor}
 abbr[title]{text-decoration:underline dotted;text-underline-offset:2px;cursor:help}
-.glossary-link{
-  display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--border-strong);
-  border-radius:9999px;padding:4px 12px;font-size:11.5px;font-weight:600;color:var(--primary);cursor:pointer;
-  transition:background 150ms,border-color 150ms;
-}
-.glossary-link svg{width:12px;height:12px;color:var(--accent)}
-.glossary-link:hover{background:#EFF6FC;border-color:var(--accent)}
 
 /* ── Tabs: the sidebar switches these, only one is ever visible at a time,
    which is what keeps the page from reading as one very long scroll. ── */
@@ -159,12 +134,12 @@ abbr[title]{text-decoration:underline dotted;text-underline-offset:2px;cursor:he
   background:linear-gradient(90deg,var(--primary),var(--accent));opacity:0;transition:opacity 220ms;
 }
 .metric-card:hover,.indicator-card:hover,.methods-card:hover,.instrument-card:hover,.card:hover{
-  transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(0,147,213,.3);
+  transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(23,108,79,.35);
 }
 .metric-card:hover::after{opacity:1}
 .metric-card .m-icon{
   width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;
-  background:linear-gradient(135deg,var(--primary),#003f8f);box-shadow:0 3px 8px rgba(0,32,91,.3);
+  background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 3px 8px rgba(12,74,54,.3);
 }
 .metric-card .m-icon svg{width:16px;height:16px;color:#fff}
 .metric-value{font-family:var(--font-serif);font-size:var(--fs-2xl);font-weight:600;letter-spacing:-.01em;line-height:1}
@@ -285,7 +260,7 @@ details.indicator-def .def-body dd{margin:0}
 /* ── Glossary ── */
 .glossary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
 .glossary-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;transition:transform 220ms,box-shadow 220ms,border-color 220ms}
-.glossary-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(0,147,213,.3)}
+.glossary-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(23,108,79,.35)}
 .glossary-card h4{
   font-family:var(--font-sans);font-size:12.5px;font-weight:700;color:var(--primary);margin:0 0 12px;
   display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:.5px;
@@ -321,10 +296,6 @@ details.indicator-def .def-body dd{margin:0}
 .timeline-row:last-child{border-bottom:none}
 .timeline-dates{color:var(--muted);font-size:11px;min-width:150px}
 
-/* ── Footer ── */
-.site-footer{padding:24px 32px 40px;font-size:11.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 20px}
-.site-footer strong{color:var(--ink)}
-
 /* ── Print ── */
 @media print{
   .side-nav,.skip-link,#tooltip,#country-panel-overlay,#country-panel,.sort-btn,.no-print,#nav-toggle{display:none!important}
@@ -332,12 +303,10 @@ details.indicator-def .def-body dd{margin:0}
   .main{padding:0}
   body{background:#fff}
   .top-bar{position:static;box-shadow:none;background:#fff!important}
-  .top-bar::after{display:none}
   .top-bar-title{color:#000!important}
   .top-bar-sub{color:#333!important}
   .who-logo,.dpc-logo{filter:invert(1) brightness(.3)}
   .hero-right{background:#fff!important;color:#000!important;clip-path:none!important}
-  .hero-right-texture{display:none}
   .hero-stat-val,.hero-stat-lbl{color:#000!important}
   .hero-stat{border-left-color:#999}
   /* Every tab prints, one per page, instead of only whichever one was on screen */

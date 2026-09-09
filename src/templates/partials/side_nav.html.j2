@@ -8,9 +8,5 @@
     <button class="nav-link" type="button" data-tab="risks"><svg><use href="#icon-alert-triangle"/></svg>Risk register</button>
     <button class="nav-link" type="button" data-tab="methods"><svg><use href="#icon-book"/></svg>Methods &amp; glossary</button>
   </nav>
-  <div class="nav-foot">
-    Workbook {{ header.workbook_version.split('(')[0].strip() if '(' in header.workbook_version else header.workbook_version }}<br>
-    Built {{ header.build_date }}
-  </div>
 </nav>
 <div id="side-nav-overlay" class="no-print"></div>

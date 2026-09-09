@@ -9,6 +9,9 @@ from __future__ import annotations
 
 from html import escape
 
+PRIMARY = "#0C4A36"
+ACCENT = "#176C4F"
+
 STATUS_COLOR = {
     "C": "#2E7D32",
     "IP": "#F9A825",
@@ -53,19 +56,19 @@ def phase_pipeline_svg(phase_position: str | None, delayed_count: int = 0) -> st
     )
     if reached_idx >= 0:
         x_end = 12 + step * reached_idx
-        colour = "#C62828" if delayed_count else "#00205B"
+        colour = "#C62828" if delayed_count else PRIMARY
         parts.append(
             f'<line x1="12" y1="{y}" x2="{x_end}" y2="{y}" stroke="{colour}" stroke-width="3" stroke-linecap="round"/>'
         )
     for i, phase in enumerate(PHASE_ORDER):
         cx = 12 + step * i
         if i < reached_idx:
-            fill, r = "#00205B", 5
+            fill, r = PRIMARY, 5
         elif i == reached_idx:
-            fill, r = ("#C62828" if delayed_count else "#0093D5"), 7
+            fill, r = ("#C62828" if delayed_count else ACCENT), 7
         else:
             fill, r = "#FFFFFF", 5
-        stroke = "#00205B" if i <= reached_idx else "#B9BCC4"
+        stroke = PRIMARY if i <= reached_idx else "#B9BCC4"
         parts.append(f'<circle cx="{cx}" cy="{y}" r="{r}" fill="{fill}" stroke="{stroke}" stroke-width="2"/>')
         parts.append(
             f'<text x="{cx}" y="{h - 3}" font-size="8" text-anchor="middle" '
@@ -97,8 +100,8 @@ def dual_bar_svg(rate: float, wpi: float, width: int = 150, height: int = 40) ->
         f'<svg viewBox="0 0 {width} {height}" width="{width}" height="{height}" role="img" '
         f'aria-label="Completion rate {rate*100:.1f} percent, weighted progress index {wpi*100:.1f} percent">'
     ]
-    svg.append(bar(0, rate, "#00205B"))
-    svg.append(bar(bar_h + gap, wpi, "#0093D5"))
+    svg.append(bar(0, rate, PRIMARY))
+    svg.append(bar(bar_h + gap, wpi, ACCENT))
     svg.append("</svg>")
     return "".join(svg)
 
@@ -276,7 +279,7 @@ def domain_overview_svg(domain_counts: list[tuple[str, int]], width: int = 720) 
             f'<rect x="{label_w}" y="{y}" width="{bar_w:.1f}" height="{row_h}" rx="4" fill="#EEEEE8"/>'
         )
         parts.append(
-            f'<rect x="{label_w}" y="{y}" width="{w:.1f}" height="{row_h}" rx="4" fill="#0093D5"/>'
+            f'<rect x="{label_w}" y="{y}" width="{w:.1f}" height="{row_h}" rx="4" fill="{ACCENT}"/>'
         )
         parts.append(
             f'<text x="{label_w + bar_w + 10}" y="{y + row_h/2 + 4:.1f}" font-size="11" font-weight="700" '
