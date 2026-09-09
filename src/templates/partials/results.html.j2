@@ -2,7 +2,7 @@
   <div class="section-head">
     <div class="section-eyebrow"><span class="n">4</span>Access to medicines results</div>
     <h2 id="results-h2">The point of the whole exercise</h2>
-    <p class="section-sub">Grouped by domain. Where no value has been recorded, the card names the milestone that will produce it and its expected date, rather than an empty chart. At this stage of implementation, most of this section is in that state — that is itself the message.</p>
+    <p class="section-sub">Grouped by domain. Where no value has been recorded, the card names the milestone that will produce it and its expected date, rather than an empty chart. At this stage of implementation, most of this section is in that state, and that is itself the message.</p>
   </div>
 
   <div class="card" style="overflow-x:auto;margin-bottom:26px">
@@ -24,7 +24,7 @@
         <div class="indicator-meta">{{ ind.framework }} &middot; {{ ind.populated_count }} of {{ ind.countries|length }} countries populated this round</div>
         {% if ind.populated_count < ind.countries|length %}
         <div class="indicator-empty">
-          Not yet recorded — produced by <strong>{{ ind.source_milestone }}</strong> ({{ ind.source_milestone_name }}). Expected date shown per country below.
+          Not yet recorded. Produced by <strong>{{ ind.source_milestone }}</strong> ({{ ind.source_milestone_name }}). Expected date shown per country below.
         </div>
         {% endif %}
 
@@ -40,13 +40,13 @@
               {% for cr in ind.countries %}
               <tr>
                 <td><span class="iso-badge" style="width:28px;height:20px;font-size:9.5px">{{ cr.iso3 }}</span></td>
-                <td class="num">{{ cr.baseline if cr.baseline is not none else '—' }}{% if cr.baseline_year %} <span style="color:var(--muted)">({{ cr.baseline_year }})</span>{% endif %}</td>
-                <td class="num">{{ cr.target if cr.target is not none else '—' }}{% if cr.target_year %} <span style="color:var(--muted)">({{ cr.target_year }})</span>{% endif %}</td>
+                <td class="num">{{ cr.baseline if cr.baseline is not none else '-' }}{% if cr.baseline_year %} <span style="color:var(--muted)">({{ cr.baseline_year }})</span>{% endif %}</td>
+                <td class="num">{{ cr.target if cr.target is not none else '-' }}{% if cr.target_year %} <span style="color:var(--muted)">({{ cr.target_year }})</span>{% endif %}</td>
                 {% if cr.value is not none %}
                 <td class="num">{{ cr.value }}</td>
-                <td class="num">{{ cr.gap if cr.gap is not none else '—' }}</td>
+                <td class="num">{{ cr.gap if cr.gap is not none else '-' }}</td>
                 {% else %}
-                <td colspan="2" style="color:#8A5A00;white-space:normal;font-size:11px">Pending — expected {{ cr.pending.expected }}</td>
+                <td colspan="2" style="color:#8A5A00;white-space:normal;font-size:11px">Pending, expected {{ cr.pending.expected }}</td>
                 {% endif %}
               </tr>
               {% endfor %}

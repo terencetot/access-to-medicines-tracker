@@ -8,7 +8,7 @@
     {% for m in regional_summary %}
     <div class="card metric-card">
       <div class="m-icon" style="background:var(--primary)"><svg><use href="#{{ m.icon }}"/></svg></div>
-      <div class="metric-value">{{ m.value }} <span class="denom">{{ m.denom }}</span></div>
+      <div class="metric-value"><span class="count-up" data-target="{{ m.value }}">{{ m.value }}</span> <span class="denom">{{ m.denom }}</span></div>
       <div class="metric-label">{{ m.label }}</div>
       {% if m.target %}<div class="metric-target">Serves {{ m.target }}</div>{% endif %}
     </div>

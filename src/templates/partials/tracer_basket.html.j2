@@ -6,7 +6,7 @@
   </div>
 
   <div class="notice-band">
-    <strong>Standing note.</strong> No antidementia medicine (donepezil, galantamine, rivastigmine, memantine) appears on the WHO Model List of Essential Medicines, 24th list (2025). Access to these medicines is therefore not measured as essential-medicines availability; it is measured through regulatory approval, generic availability and on-label reimbursement (results indicators D6&ndash;D9), following Global Dementia Observatory indicator 10.
+    <strong>Standing note.</strong> No antidementia medicine (donepezil, galantamine, rivastigmine, memantine) appears on the WHO Model List of Essential Medicines, 24th list (2025). Access to these medicines is therefore not measured as essential-medicines availability; it is measured through regulatory approval, generic availability and on-label reimbursement (results indicators D6 to D9), following Global Dementia Observatory indicator 10.
   </div>
 
   {% for category, items in tracer_by_category.items() %}
@@ -25,8 +25,8 @@
           <tr>
             <td class="num">{{ t.ID }}</td>
             <td>{{ t['International non-proprietary name'] }}</td>
-            <td>{{ t.Strength or '—' }}</td>
-            <td>{{ t['Dosage form'] or '—' }}</td>
+            <td>{{ t.Strength or '-' }}</td>
+            <td>{{ t['Dosage form'] or '-' }}</td>
             <td style="font-size:11.5px">{{ t['WHO Model List status (24th list, 2025)'] }}</td>
             <td style="font-size:11.5px">{{ t['Position in the survey medicine list'] }}</td>
             <td>{% if t['IGAP relevance'] == 'Yes' %}<span class="chip yes">Yes</span>{% else %}<span class="chip no">No</span>{% endif %}</td>

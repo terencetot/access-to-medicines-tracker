@@ -191,7 +191,7 @@ def build_context(data: dict) -> dict:
                 row = status_for(iso, mid) or {}
                 status = row.get("Status", "NS")
                 tip = (
-                    f"{m['Milestone']} — {iso}\n"
+                    f"{m['Milestone']} ({iso})\n"
                     f"Status: {charts.STATUS_LABEL.get(status, status)}\n"
                     f"Planned: {row.get('Planned date') or 'not on file'}  "
                     f"Actual: {row.get('Actual date') or 'not on file'}\n"

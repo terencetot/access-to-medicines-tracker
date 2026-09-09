@@ -15,6 +15,31 @@
       navToggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
   }
+  /* ---- Count-up numbers: the HTML already holds the true value, so this
+     is a pure enhancement and never the only source of the figure ------- */
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute("data-target"));
+    if (isNaN(target) || reduceMotion) return;
+    var start = null;
+    var duration = 900;
+    function step(ts) {
+      if (!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
+  function animateCountsIn(root) {
+    root.querySelectorAll(".count-up").forEach(function (el) {
+      el.textContent = "0";
+      countUp(el);
+    });
+  }
+
   /* ---- Tab switching (sidebar buttons drive tab-panes) --------------- */
   var navLinks = Array.prototype.slice.call(document.querySelectorAll(".side-nav .nav-link"));
   var panes = Array.prototype.slice.call(document.querySelectorAll(".main-inner > .tab-pane"));
@@ -22,12 +47,19 @@
     panes.forEach(function (p) { p.classList.toggle("is-active", p.getAttribute("data-tab") === name); });
     navLinks.forEach(function (a) { a.classList.toggle("is-active", a.getAttribute("data-tab") === name); });
     document.getElementById("main-content").scrollIntoView({ block: "start", behavior: "auto" });
+    var active = document.querySelector(".tab-pane.is-active");
+    if (active) animateCountsIn(active);
   }
   navLinks.forEach(function (btn) {
     btn.addEventListener("click", function () {
       activateTab(btn.getAttribute("data-tab"));
       closeNav();
     });
+  });
+  window.addEventListener("load", function () {
+    animateCountsIn(document.querySelector(".hero-right"));
+    var active = document.querySelector(".tab-pane.is-active");
+    if (active) animateCountsIn(active);
   });
   /* Any element elsewhere on the page can jump to a tab via data-goto-tab */
   document.querySelectorAll("[data-goto-tab]").forEach(function (el) {
@@ -109,5 +141,21 @@
   overlay.addEventListener("click", closeCountry);
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") { closeCountry(); hideTip(); closeNav(); }
+  });
+
+  /* ---- Reading progress + back to top -------------------------------- */
+  var progressBar = document.getElementById("reading-progress");
+  var backToTop = document.getElementById("back-to-top");
+  function onScroll() {
+    var doc = document.documentElement;
+    var scrollable = doc.scrollHeight - doc.clientHeight;
+    var pct = scrollable > 0 ? (doc.scrollTop / scrollable) * 100 : 0;
+    progressBar.style.width = pct + "%";
+    backToTop.classList.toggle("is-visible", doc.scrollTop > 500);
+  }
+  document.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+  backToTop.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   });
 })();

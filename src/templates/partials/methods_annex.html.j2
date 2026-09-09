@@ -10,7 +10,7 @@
   <h3 style="font-size:14px;margin:18px 0 10px">{{ domain }}</h3>
   {% for m in items %}
   <div class="methods-card" id="method-{{ m['Indicator code'] }}">
-    <h4>{{ m['Indicator code'] }} — {{ m.Indicator }}</h4>
+    <h4>{{ m['Indicator code'] }}: {{ m.Indicator }}</h4>
     <dl class="methods-grid-def">
       <dt>Definition</dt><dd>{{ m.Definition }}</dd>
       <dt>Numerator</dt><dd>{{ m.Numerator }}</dd>

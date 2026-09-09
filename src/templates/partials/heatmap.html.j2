@@ -22,7 +22,7 @@
         </tr>
         {% for m in phase.milestones %}
         <tr>
-          <th scope="row">{{ m.id }} — {{ m.name }}</th>
+          <th scope="row">{{ m.id }}: {{ m.name }}</th>
           {% for cell in m.cells %}
           <td>
             <span class="hm-cell st-{{ cell.status }}"

@@ -25,10 +25,10 @@
         <div class="timeline-row">
           <span class="status-pill st-{{ t.status }}">{{ t.status }}</span>
           <span style="flex:1">
-            <strong style="font-size:12px">{{ t.id }}</strong> — {{ t.name }}
+            <strong style="font-size:12px">{{ t.id }}:</strong> {{ t.name }}
             {% if t.comment %}<br><span style="color:var(--muted);font-size:11px">{{ t.comment }}</span>{% endif %}
           </span>
-          <span class="timeline-dates">Planned {{ t.planned or '—' }}<br>Actual {{ t.actual or '—' }}</span>
+          <span class="timeline-dates">Planned {{ t.planned or 'n/a' }}<br>Actual {{ t.actual or 'n/a' }}</span>
         </div>
         {% endfor %}
       </div>
@@ -42,7 +42,7 @@
         {% for r in p.risks %}
         <div class="timeline-row">
           <span class="rating-badge {{ r.Rating }}">{{ r.Rating }}</span>
-          <span style="flex:1"><strong style="font-size:12px">{{ r['Risk ID'] }}</strong> — {{ r['Risk description'] }}</span>
+          <span style="flex:1"><strong style="font-size:12px">{{ r['Risk ID'] }}:</strong> {{ r['Risk description'] }}</span>
         </div>
         {% endfor %}
       </div>

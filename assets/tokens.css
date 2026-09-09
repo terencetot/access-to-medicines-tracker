@@ -32,7 +32,6 @@
   --topbar-h:64px;
 }
 html{scroll-behavior:smooth}
-html,body{overflow-x:hidden;max-width:100%}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
@@ -51,6 +50,22 @@ a{color:var(--primary)}
 a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,
 [tabindex]:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:3px}
 
+/* ── Reading progress ── */
+#reading-progress{
+  position:fixed;top:0;left:0;height:3px;width:0%;z-index:2200;
+  background:linear-gradient(90deg,var(--accent),#2FA97A);transition:width .1s linear;
+}
+
+/* ── Back to top ── */
+#back-to-top{
+  position:fixed;bottom:26px;right:26px;width:44px;height:44px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;box-shadow:var(--shadow-lg);
+  display:none;align-items:center;justify-content:center;cursor:pointer;z-index:999;transition:transform 200ms,box-shadow 200ms;
+}
+#back-to-top.is-visible{display:flex}
+#back-to-top:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(12,74,54,.35)}
+#back-to-top svg{width:18px;height:18px;stroke:currentColor}
+
 /* ── Top bar: institutional branding, sticky above everything ── */
 .top-bar{
   position:sticky;top:0;z-index:1100;height:var(--topbar-h);
@@ -67,10 +82,10 @@ a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,
 .top-bar-sub{color:rgba(255,255,255,.68);font-size:10.5px;letter-spacing:.3px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* ── App shell: fixed left nav + main content ── */
-.app-shell{display:flex;min-height:calc(100vh - var(--topbar-h))}
+.app-shell{display:flex;background:var(--primary)}
 .side-nav{
   width:var(--nav-w);flex-shrink:0;background:var(--primary);color:#fff;
-  position:sticky;top:var(--topbar-h);height:calc(100vh - var(--topbar-h));overflow-y:auto;padding:18px 0 16px;
+  position:sticky;top:var(--topbar-h);align-self:flex-start;max-height:calc(100vh - var(--topbar-h));overflow-y:auto;padding:18px 0 16px;
   display:flex;flex-direction:column;gap:4px;
 }
 .side-nav nav{display:flex;flex-direction:column;gap:2px;padding:0 10px}
@@ -83,7 +98,7 @@ a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,
 .side-nav .nav-link:hover{background:rgba(255,255,255,.08);color:#fff}
 .side-nav .nav-link.is-active{background:rgba(255,255,255,.14);color:#fff;font-weight:700}
 .side-nav .nav-link.is-active svg{opacity:1}
-.main{flex:1;min-width:0;padding:0 0 60px}
+.main{flex:1;min-width:0;padding:0 0 60px;background:var(--bg)}
 .main-inner{max-width:1180px;margin:0 auto;padding:0 32px}
 
 /* ── Hero (section 1) ── */
@@ -91,7 +106,7 @@ a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,
 .hero-inner{display:flex;align-items:stretch;min-height:238px}
 .hero-left{flex:1;min-width:0;padding:38px 40px 32px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1}
 .hero .eyebrow{font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent)}
-.hero h1{font-size:var(--fs-3xl);margin:8px 0 8px;letter-spacing:-.01em}
+.hero h1{font-size:clamp(2.4rem,3.4vw,3.4rem);margin:10px 0 10px;letter-spacing:-.015em;line-height:1.08;text-wrap:balance}
 .hero .subtitle{font-size:var(--fs-md);color:var(--muted);margin-bottom:16px;max-width:640px}
 .hero-right{
   width:300px;flex-shrink:0;position:relative;overflow:hidden;
@@ -296,9 +311,16 @@ details.indicator-def .def-body dd{margin:0}
 .timeline-row:last-child{border-bottom:none}
 .timeline-dates{color:var(--muted);font-size:11px;min-width:150px}
 
+/* ── Bottom bar: a quiet visual bookend for the top bar ── */
+.bottom-bar{background:linear-gradient(90deg,var(--primary) 0%,var(--accent) 100%);padding:22px 28px}
+.bottom-bar-inner{max-width:1480px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:18px}
+.bottom-bar .who-logo{height:28px;opacity:.92}
+.bottom-bar .dpc-logo{height:21px;opacity:.92}
+.bottom-bar-divider{width:1px;height:22px;background:rgba(255,255,255,.25)}
+
 /* ── Print ── */
 @media print{
-  .side-nav,.skip-link,#tooltip,#country-panel-overlay,#country-panel,.sort-btn,.no-print,#nav-toggle{display:none!important}
+  .side-nav,.skip-link,#tooltip,#country-panel-overlay,#country-panel,.sort-btn,.no-print,#nav-toggle,.bottom-bar,#reading-progress,#back-to-top{display:none!important}
   .app-shell{display:block}
   .main{padding:0}
   body{background:#fff}
@@ -334,7 +356,7 @@ details.indicator-def .def-body dd{margin:0}
 }
 @media(max-width:520px){
   .grid-metrics{grid-template-columns:1fr 1fr}
-  .hero h1{font-size:1.7rem}
+  .hero h1{font-size:2.1rem}
   .header-meta{gap:8px 14px}
   .indicator-grid{grid-template-columns:1fr}
   .who-logo{height:26px}

@@ -3,13 +3,13 @@
     <div class="hero-left">
       <div class="eyebrow">WHO Regional Office for Africa · <abbr title="Disease Prevention and Control">DPC</abbr> · <abbr title="Noncommunicable diseases">NCD</abbr> and Mental Health</div>
       <h1>Access to Medicines Tracking Platform</h1>
-      <div class="subtitle">Neurological disorders and dementia, WHO African Region — <abbr title="Intersectoral Global Action Plan on Epilepsy and Other Neurological Disorders, 2022–2031">IGAP</abbr> 2022&ndash;2031 and the global action plan on dementia</div>
+      <div class="subtitle">Neurological disorders and dementia, WHO African Region, <abbr title="Intersectoral Global Action Plan on Epilepsy and Other Neurological Disorders, 2022-2031">IGAP</abbr> 2022-2031 and the global action plan on dementia</div>
     </div>
     <div class="hero-right">
       <div class="hero-stats">
         {% for s in hero_stats %}
         <div class="hero-stat">
-          <div class="hero-stat-val">{{ s.value }}</div>
+          <div class="hero-stat-val"><span class="count-up" data-target="{{ s.value }}">{{ s.value }}</span></div>
           <div class="hero-stat-lbl">{{ s.label }}</div>
         </div>
         {% endfor %}

@@ -14,6 +14,11 @@
 <a class="skip-link" href="#main-content">Skip to main content</a>
 {{ icons | safe }}
 
+<div id="reading-progress"></div>
+<button id="back-to-top" type="button" aria-label="Back to top">
+  <svg><use href="#icon-arrow-up"/></svg>
+</button>
+
 <div id="tooltip" role="tooltip"></div>
 
 {% include "partials/top_bar.html.j2" %}
@@ -53,6 +58,8 @@
     </div>
   </main>
 </div>
+
+{% include "partials/bottom_bar.html.j2" %}
 
 {% include "partials/country_panel.html.j2" %}
 

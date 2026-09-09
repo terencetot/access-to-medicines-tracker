@@ -195,7 +195,7 @@ def risk_matrix_svg(risks: list[dict], width: int = 560, height: int = 460) -> s
         rid = escape(str(r.get("Risk ID", "")))
         country = escape(str(r.get("Country", "")))
         desc = escape(str(r.get("Risk description", "")))
-        title = f"{rid} — {country}: {desc} (rating {r.get('Rating')}, score {r.get('Inherent score')})"
+        title = f"{rid}, {country}: {desc} (rating {r.get('Rating')}, score {r.get('Inherent score')})"
         parts.append(
             f'<g tabindex="0"><title>{title}</title>'
             f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="9" fill="{colour}" fill-opacity="0.88" '
