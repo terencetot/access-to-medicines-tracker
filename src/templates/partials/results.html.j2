@@ -5,6 +5,10 @@
     <p class="section-sub">Grouped by domain. Where no value has been recorded, the card names the milestone that will produce it and its expected date, rather than an empty chart. At this stage of implementation, most of this section is in that state — that is itself the message.</p>
   </div>
 
+  <div class="card" style="overflow-x:auto;margin-bottom:26px">
+    {{ domain_overview_svg | safe }}
+  </div>
+
   {% for domain, indicators in domains.items() %}
   {% if indicators %}
   <div class="domain-block">

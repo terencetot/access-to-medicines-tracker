@@ -1,0 +1,39 @@
+<section class="hero" id="section-summary">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="eyebrow">WHO Regional Office for Africa · <abbr title="Disease Prevention and Control">DPC</abbr> · <abbr title="Noncommunicable diseases">NCD</abbr> and Mental Health</div>
+      <h1>Access to Medicines Tracking Platform</h1>
+      <div class="subtitle">Neurological disorders and dementia, WHO African Region — <abbr title="Intersectoral Global Action Plan on Epilepsy and Other Neurological Disorders, 2022–2031">IGAP</abbr> 2022&ndash;2031 and the global action plan on dementia</div>
+      <div class="header-meta">
+        <span>Reporting period: <strong>{{ header.reporting_period }}</strong></span>
+        <span>Build date: <strong>{{ header.build_date }}</strong></span>
+        <span>Workbook: <strong>{{ header.workbook_version }}</strong></span>
+        <button type="button" class="glossary-link" data-goto-tab="methods">
+          <svg><use href="#icon-book"/></svg>Glossary of terms
+        </button>
+      </div>
+      {% if header.chip_amber %}
+      <span class="status-chip is-amber">
+        <svg><use href="#icon-alert-triangle"/></svg>
+        Provisional data, evidence pending — {{ header.evidence_pct }}% of completed milestones verified
+      </span>
+      {% else %}
+      <span class="status-chip is-green">
+        <svg><use href="#icon-shield-check"/></svg>
+        {{ header.evidence_pct }}% of completed milestones verified
+      </span>
+      {% endif %}
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-texture" aria-hidden="true"></div>
+      <div class="hero-stats">
+        {% for s in hero_stats %}
+        <div class="hero-stat">
+          <div class="hero-stat-val">{{ s.value }}</div>
+          <div class="hero-stat-lbl">{{ s.label }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>

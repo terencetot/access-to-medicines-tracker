@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Access to Medicines Tracking Platform — WHO AFRO</title>
+<title>Access to Medicines Tracking Platform</title>
 <meta name="description" content="Access to Medicines Tracking Platform for neurological disorders and dementia, WHO African Region. IGAP 2022-2031 and the global action plan on dementia.">
 <link rel="icon" href="data:,">
 <style>
@@ -16,6 +16,8 @@
 
 <div id="tooltip" role="tooltip"></div>
 
+{% include "partials/top_bar.html.j2" %}
+
 <div class="app-shell">
   <button id="nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="side-nav">
     <svg><use href="#icon-menu"/></svg>
@@ -24,17 +26,32 @@
   {% include "partials/side_nav.html.j2" %}
 
   <main class="main" id="main-content">
+    {% include "partials/hero.html.j2" %}
     <div class="main-inner">
-      {% include "partials/header.html.j2" %}
-      {% include "partials/regional_summary.html.j2" %}
-      {% include "partials/country_progress.html.j2" %}
-      {% include "partials/heatmap.html.j2" %}
-      {% include "partials/results.html.j2" %}
-      {% include "partials/tracer_basket.html.j2" %}
-      {% include "partials/risk_register.html.j2" %}
-      {% include "partials/methods_annex.html.j2" %}
-      {% include "partials/footer.html.j2" %}
+      <div class="tab-pane is-active" data-tab="summary">
+        {% include "partials/regional_summary.html.j2" %}
+      </div>
+      <div class="tab-pane" data-tab="progress">
+        {% include "partials/country_progress.html.j2" %}
+      </div>
+      <div class="tab-pane" data-tab="heatmap">
+        {% include "partials/heatmap.html.j2" %}
+      </div>
+      <div class="tab-pane" data-tab="results">
+        {% include "partials/results.html.j2" %}
+      </div>
+      <div class="tab-pane" data-tab="tracer">
+        {% include "partials/tracer_basket.html.j2" %}
+      </div>
+      <div class="tab-pane" data-tab="risks">
+        {% include "partials/risk_register.html.j2" %}
+      </div>
+      <div class="tab-pane" data-tab="methods">
+        {% include "partials/glossary.html.j2" %}
+        {% include "partials/methods_annex.html.j2" %}
+      </div>
     </div>
+    {% include "partials/footer.html.j2" %}
   </main>
 </div>
 

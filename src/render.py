@@ -12,7 +12,7 @@ import json
 import re
 import subprocess
 import sys
-from collections import OrderedDict
+from collections import Counter, OrderedDict
 from pathlib import Path
 
 import jinja2
@@ -206,6 +206,18 @@ def build_context(data: dict) -> dict:
             })
         phases.append({"name": phase, "milestones": phase_milestones})
 
+    # ---- Regional phase distribution (all countries x all milestones in each phase) --
+    phase_distribution = []
+    for phase in seen_phases:
+        rows = [r for r in progress if r["Phase"] == phase]
+        counts = Counter(r["Status"] for r in rows)
+        phase_distribution.append({
+            "phase": phase, "short": charts.PHASE_SHORT.get(phase, phase),
+            "counts": {s: counts.get(s, 0) for s in ("C", "IP", "D", "NS", "NA")},
+            "total": len(rows),
+        })
+    phase_distribution_svg = charts.phase_distribution_svg(phase_distribution)
+
     # ---- Results by domain --------------------------------------------
     meta_by_code = {m["Indicator code"]: m for m in indicator_metadata}
     results_by_code: dict[str, list[dict]] = OrderedDict()
@@ -248,6 +260,10 @@ def build_context(data: dict) -> dict:
             "countries": country_rows,
             "populated_count": sum(1 for cr in country_rows if cr["value"] is not None),
         })
+
+    domain_overview_svg = charts.domain_overview_svg(
+        [(d, len(items)) for d, items in domains.items() if items]
+    )
 
     # ---- Tracer basket ------------------------------------------------
     tracer_by_category: "OrderedDict[str, list[dict]]" = OrderedDict()
@@ -308,7 +324,20 @@ def build_context(data: dict) -> dict:
         "data_quality_log": data["data_quality_log"],
         "footer": footer,
         "status_label": charts.STATUS_LABEL,
+        "phase_distribution_svg": phase_distribution_svg,
+        "domain_overview_svg": domain_overview_svg,
+        "hero_stats": [
+            {"value": len(countries), "label": "Countries engaged"},
+            {"value": len(milestones), "label": "Milestones catalogued"},
+            {"value": len(tracer_basket), "label": "Tracer medicines and products"},
+        ],
     }
+
+
+def _b64_image(path: Path) -> str:
+    kind = "svg+xml" if path.suffix == ".svg" else path.suffix.lstrip(".")
+    data = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:image/{kind};base64,{data}"
 
 
 def render(context: dict) -> str:
@@ -320,8 +349,10 @@ def render(context: dict) -> str:
     )
     css = (ASSETS / "tokens.css").read_text(encoding="utf-8")
     icons = (ASSETS / "icons.svg").read_text(encoding="utf-8")
+    who_logo = _b64_image(ASSETS / "img" / "who_logo.png")
+    dpc_logo = _b64_image(ASSETS / "img" / "dpc_logo.png")
     template = env.get_template("dashboard.html.j2")
-    return template.render(css=css, icons=icons, **context)
+    return template.render(css=css, icons=icons, who_logo=who_logo, dpc_logo=dpc_logo, **context)
 
 
 def main() -> None:

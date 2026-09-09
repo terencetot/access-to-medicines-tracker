@@ -14,4 +14,19 @@
     </div>
     {% endfor %}
   </div>
+
+  <div class="section-divider"></div>
+
+  <h3 class="subsection-title">Milestone status by phase, region-wide</h3>
+  <p class="section-sub" style="margin-bottom:16px">All 186 country&times;milestone cells from the heatmap, aggregated by phase. The count on the right is completed over total.</p>
+  <div class="card" style="overflow-x:auto">
+    {{ phase_distribution_svg | safe }}
+    <div class="legend" style="margin-top:16px">
+      <span class="item"><span class="status-pill st-C">C</span> Completed</span>
+      <span class="item"><span class="status-pill st-IP">IP</span> In progress</span>
+      <span class="item"><span class="status-pill st-D">D</span> Delayed</span>
+      <span class="item"><span class="status-pill st-NS">NS</span> Not started</span>
+      <span class="item"><span class="status-pill st-NA">NA</span> Not applicable</span>
+    </div>
+  </div>
 </section>

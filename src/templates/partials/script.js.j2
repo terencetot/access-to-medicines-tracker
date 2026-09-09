@@ -15,29 +15,24 @@
       navToggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
   }
-  document.querySelectorAll(".side-nav .nav-link").forEach(function (a) {
-    a.addEventListener("click", closeNav);
-  });
-
-  /* ---- Active section highlighting on scroll ------------------------ */
+  /* ---- Tab switching (sidebar buttons drive tab-panes) --------------- */
   var navLinks = Array.prototype.slice.call(document.querySelectorAll(".side-nav .nav-link"));
-  var sections = navLinks
-    .map(function (a) { return document.querySelector(a.getAttribute("href")); })
-    .filter(Boolean);
-  if ("IntersectionObserver" in window && sections.length) {
-    var observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          navLinks.forEach(function (a) { a.classList.remove("is-active"); });
-          var idx = sections.indexOf(entry.target);
-          if (idx >= 0) navLinks[idx].classList.add("is-active");
-        });
-      },
-      { rootMargin: "-20% 0px -70% 0px" }
-    );
-    sections.forEach(function (s) { observer.observe(s); });
+  var panes = Array.prototype.slice.call(document.querySelectorAll(".main-inner > .tab-pane"));
+  function activateTab(name) {
+    panes.forEach(function (p) { p.classList.toggle("is-active", p.getAttribute("data-tab") === name); });
+    navLinks.forEach(function (a) { a.classList.toggle("is-active", a.getAttribute("data-tab") === name); });
+    document.getElementById("main-content").scrollIntoView({ block: "start", behavior: "auto" });
   }
+  navLinks.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      activateTab(btn.getAttribute("data-tab"));
+      closeNav();
+    });
+  });
+  /* Any element elsewhere on the page can jump to a tab via data-goto-tab */
+  document.querySelectorAll("[data-goto-tab]").forEach(function (el) {
+    el.addEventListener("click", function () { activateTab(el.getAttribute("data-goto-tab")); });
+  });
 
   /* ---- Tooltip for heatmap cells (mouse + keyboard) ------------------ */
   var tooltip = document.getElementById("tooltip");
@@ -91,9 +86,9 @@
   /* ---- Country profile drawer ---------------------------------------- */
   var overlay = document.getElementById("country-panel-overlay");
   var panel = document.getElementById("country-panel");
-  var panes = document.querySelectorAll(".panel-pane");
+  var countryPanes = document.querySelectorAll(".panel-pane");
   function openCountry(iso) {
-    panes.forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== iso; });
+    countryPanes.forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== iso; });
     panel.classList.add("is-open");
     overlay.classList.add("is-open");
     panel.setAttribute("aria-hidden", "false");

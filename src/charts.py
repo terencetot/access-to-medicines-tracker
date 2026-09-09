@@ -206,6 +206,87 @@ def risk_matrix_svg(risks: list[dict], width: int = 560, height: int = 460) -> s
     return "".join(parts)
 
 
+def phase_distribution_svg(phase_distribution: list[dict], width: int = 720) -> str:
+    """A horizontal stacked bar per phase (P1 to P5): every milestone x country
+    cell in that phase, by status. Reads directly against the heatmap: the
+    same 186 cells, aggregated instead of enumerated."""
+    row_h, gap, label_w, pct_w = 30, 14, 190, 46
+    bar_w = width - label_w - pct_w
+    height = len(phase_distribution) * (row_h + gap) + gap
+
+    parts = [
+        f'<svg viewBox="0 0 {width} {height}" width="100%" height="{height}" '
+        f'role="img" aria-label="Milestone status by phase, region-wide" preserveAspectRatio="xMinYMin meet">'
+    ]
+    y = gap
+    for row in phase_distribution:
+        total = row["total"] or 1
+        completed = row["counts"]["C"]
+        parts.append(
+            f'<text x="0" y="{y + row_h/2 + 4:.1f}" font-size="12" font-weight="700" '
+            f'font-family="Georgia,serif" fill="#14213D">{escape(row["short"])}</text>'
+        )
+        parts.append(
+            f'<text x="26" y="{y + row_h/2 + 4:.1f}" font-size="10.5" '
+            f'font-family="Calibri,Arial,sans-serif" fill="#5B6470">'
+            f'{escape(row["phase"].split(" ", 1)[1] if " " in row["phase"] else "")}</text>'
+        )
+        x = label_w
+        for status in ("C", "IP", "D", "NS", "NA"):
+            n = row["counts"][status]
+            if not n:
+                continue
+            seg_w = bar_w * n / total
+            title = f'{STATUS_LABEL[status]}: {n} of {total}'
+            parts.append(
+                f'<g><title>{escape(title)}</title>'
+                f'<rect x="{x:.1f}" y="{y}" width="{seg_w:.1f}" height="{row_h}" '
+                f'fill="{STATUS_COLOR[status]}"/></g>'
+            )
+            x += seg_w
+        parts.append(
+            f'<text x="{label_w + bar_w + 10}" y="{y + row_h/2 + 4:.1f}" font-size="11" font-weight="700" '
+            f'font-family="Calibri,Arial,sans-serif" fill="#14213D">{completed}/{total}</text>'
+        )
+        y += row_h + gap
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def domain_overview_svg(domain_counts: list[tuple[str, int]], width: int = 720) -> str:
+    """A horizontal bar per results domain, sized by how many indicators it
+    holds — the map of section 4 before the reader scrolls through it."""
+    row_h, gap, label_w = 26, 12, 170
+    max_n = max((n for _, n in domain_counts), default=1)
+    bar_w = width - label_w - 46
+    height = len(domain_counts) * (row_h + gap) + gap
+
+    parts = [
+        f'<svg viewBox="0 0 {width} {height}" width="100%" height="{height}" '
+        f'role="img" aria-label="Indicator count by domain" preserveAspectRatio="xMinYMin meet">'
+    ]
+    y = gap
+    for domain, n in domain_counts:
+        w = bar_w * n / max_n if max_n else 0
+        parts.append(
+            f'<text x="0" y="{y + row_h/2 + 4:.1f}" font-size="11.5" '
+            f'font-family="Calibri,Arial,sans-serif" fill="#14213D">{escape(domain)}</text>'
+        )
+        parts.append(
+            f'<rect x="{label_w}" y="{y}" width="{bar_w:.1f}" height="{row_h}" rx="4" fill="#EEEEE8"/>'
+        )
+        parts.append(
+            f'<rect x="{label_w}" y="{y}" width="{w:.1f}" height="{row_h}" rx="4" fill="#0093D5"/>'
+        )
+        parts.append(
+            f'<text x="{label_w + bar_w + 10}" y="{y + row_h/2 + 4:.1f}" font-size="11" font-weight="700" '
+            f'font-family="Calibri,Arial,sans-serif" fill="#14213D">{n}</text>'
+        )
+        y += row_h + gap
+    parts.append("</svg>")
+    return "".join(parts)
+
+
 def sparkbar_svg(pct: float, colour: str, width: int = 64, height: int = 8) -> str:
     pct = max(0.0, min(1.0, pct))
     return (
